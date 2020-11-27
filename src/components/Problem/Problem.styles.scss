@@ -13,7 +13,7 @@
   -moz-osx-font-smoothing: grayscale;
   backface-visibility: hidden;
   transform: translateZ(0);
-  transition: transform 1s ease-out;
+  //transition: transform 0.5s ease-out;
 
   .answer {
     font: inherit;
@@ -33,18 +33,6 @@
     &:focus {
       outline: none;
       box-shadow: 0 0 2px 0.2rem white;
-    }
-
-    &:active {
-      &.right {
-        background-color: rgb(62, 177, 62);
-        transform: scale(1.2);
-      }
-
-      &.wrong {
-        background-color: red;
-        transform: scale(0.8);
-      }
     }
   }
 }

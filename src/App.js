@@ -25,21 +25,21 @@ const App = ({ problemOptions = { answersCount: 4 }, rounds = 5 }) => {
   const [problemSpec, setProblemSpec] = useState();
 
   const handleSuccess = scoreUnit => () => {
+    console.log('success');
     setScore(score + scoreUnit);
     handleRoundEnd();
-    setRoundState(roundStates.success);
   };
 
   const handleFail = () => {
+    console.log('fail');
     handleRoundEnd();
-    setRoundState(roundStates.fail);
   };
 
   const handleRoundEnd = () => {
     setRoundState(roundStates.over);
     round + 1 > rounds
-      ? setTimeout(() => setAppState(appStates.over), 1000)
-      : setTimeout(() => setRoundState(roundStates.init), 1000);
+      ? setAppState(appStates.over)
+      : setRoundState(roundStates.init);
   };
 
   const handleStart = () => {
@@ -49,23 +49,11 @@ const App = ({ problemOptions = { answersCount: 4 }, rounds = 5 }) => {
     setRoundState(roundStates.init);
   };
 
-  /*
-  const newRound = () => {
-    if (round + 1 < rounds) {
-      setRoundState(roundStates.init);
-      setRound(round + 1);
-      setProblemSpec(createProblem(problemOptions));
-      setTimeout(() => setRoundState(roundStates.running), 1000);
-    } else {
-      setAppState(appStates.over);
-    }
-  };*/
-
   const newRound = () => {
     console.log('preparing new round');
     setRound(round => round + 1);
     setProblemSpec(createProblem(problemOptions));
-    setTimeout(() => setRoundState(roundStates.running), 1000);
+    setRoundState(roundStates.running);
   };
 
   useEffect(() => {
@@ -85,32 +73,31 @@ const App = ({ problemOptions = { answersCount: 4 }, rounds = 5 }) => {
 
   const renderGame = () => {
     return (
-      <div className='app'>
-        <h1 className='main-title'>MATH KIDS</h1>
-        {roundState === roundStates.success && (
-          <p className='success'>great job!</p>
-        )}
-        {roundState === roundStates.fail && <p className='fail'>nextime!</p>}
-        <Round
-          roundState={roundState}
-          render={({ scoreUnit }) => (
-            <Fragment>
-              <Problem
-                {...{
-                  handleSuccess: handleSuccess(scoreUnit),
-                  handleFail,
-                  problemSpec
-                }}
-              />
-              <div className='score-container'>
-                <h2 className='score'>{score.toFixed(1)}</h2>
-                <h2 className='score-title'>score</h2>
-                <h2 className='score-unit'>{scoreUnit.toFixed(2)}</h2>
-              </div>
-            </Fragment>
-          )}
-        />
-      </div>
+      <Fragment>
+        <div className='app'>
+          <h1 className='main-title'>MATH KIDS</h1>
+          <Round
+            roundState={roundState}
+            render={({ scoreUnit }) => (
+              <Fragment>
+                <Problem
+                  {...{
+                    handleSuccess: handleSuccess(scoreUnit),
+                    handleFail,
+                    problemSpec
+                  }}
+                />
+                <div className='score-container'>
+                  <h2 className='score'>{score.toFixed(1)}</h2>
+                  <h2 className='score-title'>score</h2>
+                  <h2 className='score-unit'>{scoreUnit.toFixed(2)}</h2>
+                </div>
+              </Fragment>
+            )}
+          />
+        </div>
+        {roundState !== roundStates.running && <div className='freeze'></div>}
+      </Fragment>
     );
   };
 
@@ -121,7 +108,7 @@ const App = ({ problemOptions = { answersCount: 4 }, rounds = 5 }) => {
         <h2 className='score'>{score.toFixed(1)}</h2>
         <h2 className='score-title'>score</h2>
       </div>
-      <CustomButton onClick={handleStart} className='button-start'>
+      <CustomButton onClick={handleStart} className='button-restart'>
         RESTART
       </CustomButton>
     </div>
@@ -140,7 +127,6 @@ const App = ({ problemOptions = { answersCount: 4 }, rounds = 5 }) => {
   const renderGetReady = () => (
     <div className='app'>
       <h1 className='main-title'>MATH KIDS</h1>
-      <p className='get-ready'>...get ready</p>
     </div>
   );
 
@@ -149,11 +135,7 @@ const App = ({ problemOptions = { answersCount: 4 }, rounds = 5 }) => {
       return <Fragment>{renderIntro()}</Fragment>;
     case appStates.game:
       return (
-        <Fragment>
-          {problemSpec && roundState !== roundStates.init
-            ? renderGame()
-            : renderGetReady()}
-        </Fragment>
+        <Fragment>{problemSpec ? renderGame() : renderGetReady()}</Fragment>
       );
     case appStates.over:
       return <Fragment>{renderOver()}</Fragment>;

@@ -16,7 +16,16 @@ input[type='number'] {
   -moz-appearance: textfield;
 }
 
+.freeze {
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  background-color: black;
+  opacity: 0.2;
+}
+
 .app {
+  position: relative;
   font-family: 'Nerko One', cursive;
   display: flex;
   justify-content: flex-start;
@@ -89,7 +98,11 @@ input[type='number'] {
   }
 }
 
+.button-restart,
 .button-start {
   margin: 2rem 0;
+}
+
+.button-start {
   animation: fade-in 1.5s ease-out backwards 1.5s;
 }
