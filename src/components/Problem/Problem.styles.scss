@@ -1,0 +1,50 @@
+.problem {
+  font-size: 2rem;
+  font-weight: 400;
+  text-align: center;
+  border-radius: 0.5rem;
+  padding: 2rem 0;
+}
+
+.answer-container {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  grid-gap: 1.5rem;
+  -moz-osx-font-smoothing: grayscale;
+  backface-visibility: hidden;
+  transform: translateZ(0);
+  transition: transform 1s ease-out;
+
+  .answer {
+    font: inherit;
+    border: none;
+    border-radius: 0.5rem;
+    background-color: hotpink;
+    padding: 1rem 1.5rem;
+    margin: 0rem;
+    color: white;
+    text-align: center;
+    font-size: 1.7rem;
+
+    &:hover {
+      background-color: darken(hotpink, 5%);
+    }
+
+    &:focus {
+      outline: none;
+      box-shadow: 0 0 2px 0.2rem white;
+    }
+
+    &:active {
+      &.right {
+        background-color: rgb(62, 177, 62);
+        transform: scale(1.2);
+      }
+
+      &.wrong {
+        background-color: red;
+        transform: scale(0.8);
+      }
+    }
+  }
+}
