@@ -2,12 +2,11 @@ import React from 'react';
 
 import './Score.styles.scss';
 
-const Score = ({ score, children }) => {
+const Score = ({ score, className }) => {
   return (
-    <div className='score-container'>
+    <div className={`${className ? className : ''} score-container`}>
       <h2 className='score'>{score.toFixed(1)}</h2>
       <h2 className='score-title'>score</h2>
-      {children}
     </div>
   );
 };

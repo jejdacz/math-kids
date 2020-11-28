@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { Fragment } from 'react';
 import CustomButton from '../CustomButton/CustomButton.component';
 
 import './Problem.styles.scss';
@@ -23,12 +23,12 @@ const Problem = ({
   };
 
   return (
-    <div className='problem-container'>
+    <Fragment>
       <div className='problem'>{problem} = </div>
       <div className='answer-container'>
         {createButtons(correctAnswer, answers)}
       </div>
-    </div>
+    </Fragment>
   );
 };
 

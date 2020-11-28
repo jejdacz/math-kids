@@ -2,26 +2,30 @@ import React, { useState, useEffect, Fragment } from 'react';
 import Problem from './components/Problem/Problem.component';
 import CustomButton from './components/CustomButton/CustomButton.component';
 import Round from './components/Round/Round.component';
-//import Score from './components/Score/Score.component';
+import Score from './components/Score/Score.component';
 
 import createProblem from './createProblem';
 
 import './App.scss';
 
-export const appStates = Object.freeze({ intro: 0, game: 1, over: 3 });
+export const appStates = Object.freeze({
+  intro: 'intro',
+  game: 'game',
+  over: 'over'
+});
 export const roundStates = Object.freeze({
-  init: 0,
-  running: 1,
-  over: 2,
-  success: 3,
-  fail: 4
+  init: 'init',
+  running: 'running',
+  over: 'over',
+  success: 'success',
+  fail: 'fail'
 });
 
 const App = ({ problemOptions = { answersCount: 4 }, rounds = 5 }) => {
   const [appState, setAppState] = useState(appStates.intro);
-  const [score, setScore] = useState();
-  const [round, setRound] = useState();
-  const [roundState, setRoundState] = useState();
+  const [score, setScore] = useState(0);
+  const [round, setRound] = useState(0);
+  const [roundState, setRoundState] = useState(roundStates.init);
   const [problemSpec, setProblemSpec] = useState();
 
   const handleSuccess = scoreUnit => () => {
@@ -37,9 +41,7 @@ const App = ({ problemOptions = { answersCount: 4 }, rounds = 5 }) => {
 
   const handleRoundEnd = () => {
     setRoundState(roundStates.over);
-    round + 1 > rounds
-      ? setAppState(appStates.over)
-      : setRoundState(roundStates.init);
+    round + 1 > rounds ? handleOver() : setRoundState(roundStates.init);
   };
 
   const handleStart = () => {
@@ -47,6 +49,11 @@ const App = ({ problemOptions = { answersCount: 4 }, rounds = 5 }) => {
     setRound(0);
     setAppState(appStates.game);
     setRoundState(roundStates.init);
+  };
+
+  const handleOver = () => {
+    setProblemSpec();
+    setAppState(appStates.over);
   };
 
   const newRound = () => {
@@ -63,85 +70,79 @@ const App = ({ problemOptions = { answersCount: 4 }, rounds = 5 }) => {
   }, [appState, roundState]);
 
   const renderIntro = () => (
-    <div className='app intro'>
-      <h1 className='main-title'>MATH KIDS</h1>
-      <CustomButton onClick={handleStart} className='button-start'>
-        START
-      </CustomButton>
-    </div>
+    <CustomButton onClick={handleStart} className='button-start'>
+      START
+    </CustomButton>
   );
 
+  // TODO statemachine
+
   const renderGame = () => {
+    // make Component
+    // props: rounds = 5, grade = 3, changeAppState({score,rightansw})
+    // handle: handleOver, handleStart, handleRoundFinished, newRound
+    // state:  problemSpec, round, score, roundState
+
+    // handleSuccess + handleFail move to Round comp.
     return (
-      <Fragment>
-        <div className='app'>
-          <h1 className='main-title'>MATH KIDS</h1>
-          <Round
-            roundState={roundState}
-            render={({ scoreUnit }) => (
-              <Fragment>
-                <Problem
-                  {...{
-                    handleSuccess: handleSuccess(scoreUnit),
-                    handleFail,
-                    problemSpec
-                  }}
-                />
-                <div className='score-container'>
-                  <h2 className='score'>{score.toFixed(1)}</h2>
-                  <h2 className='score-title'>score</h2>
-                  <h2 className='score-unit'>{scoreUnit.toFixed(2)}</h2>
-                </div>
-              </Fragment>
-            )}
-          />
-        </div>
-        {roundState !== roundStates.running && <div className='freeze'></div>}
-      </Fragment>
+      <Round
+        roundState={roundState}
+        render={({ scoreUnit }) => (
+          <Fragment>
+            <Problem
+              {...{
+                handleSuccess: handleSuccess(scoreUnit),
+                handleFail,
+                problemSpec
+              }}
+            />
+            <h2 className='score-unit'>{scoreUnit.toFixed(2)}</h2>
+            <Score score={score} />
+          </Fragment>
+        )}
+      />
     );
   };
 
   const renderOver = () => (
-    <div className='app'>
-      <h1 className='main-title'>MATH KIDS</h1>
-      <div className='score-container'>
-        <h2 className='score'>{score.toFixed(1)}</h2>
-        <h2 className='score-title'>score</h2>
-      </div>
+    <Fragment>
+      <Score className='large' score={score} />
       <CustomButton onClick={handleStart} className='button-restart'>
         RESTART
       </CustomButton>
-    </div>
+    </Fragment>
   );
 
   const renderError = () => (
-    <div className='app'>
-      <h1 className='main-title'>MATH KIDS</h1>
+    <Fragment>
       <p className='error'>Something bad happened!</p>
       <CustomButton onClick={handleStart} className='button-start'>
         RESTART
       </CustomButton>
-    </div>
+    </Fragment>
   );
 
-  const renderGetReady = () => (
-    <div className='app'>
+  const renderWaiting = () => '';
+
+  const renderContent = () => {
+    switch (appState) {
+      case appStates.intro:
+        return renderIntro();
+      case appStates.game:
+        return problemSpec ? renderGame() : renderWaiting();
+      case appStates.over:
+        return renderOver();
+      default:
+        return renderError();
+    }
+  };
+
+  return (
+    <div className={`app ${appState}`}>
       <h1 className='main-title'>MATH KIDS</h1>
+      {renderContent()}
     </div>
   );
-
-  switch (appState) {
-    case appStates.intro:
-      return <Fragment>{renderIntro()}</Fragment>;
-    case appStates.game:
-      return (
-        <Fragment>{problemSpec ? renderGame() : renderGetReady()}</Fragment>
-      );
-    case appStates.over:
-      return <Fragment>{renderOver()}</Fragment>;
-    default:
-      return <Fragment>{renderError()}</Fragment>;
-  }
 };
 
 export default App;
