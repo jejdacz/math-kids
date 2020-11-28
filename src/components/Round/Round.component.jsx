@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { roundStates } from '../../App';
+import { roundStates } from '../../AppStates/Game.appState';
 
 const Round = ({
   initScoreUnit = 10,
