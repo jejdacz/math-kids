@@ -1,86 +1,64 @@
-import React, { useState, useEffect, Fragment } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import Problem from '../components/Problem/Problem.component';
 import Round from '../components/Round/Round.component';
 import Score from '../components/Score/Score.component';
+import { TweenLite } from 'gsap';
 
 import createProblem from '../createProblem';
-
-export const roundStates = Object.freeze({
-  init: 'init',
-  running: 'running',
-  over: 'over',
-  success: 'success',
-  fail: 'fail'
-});
 
 const Game = ({
   handleGameOver,
   problemOptions = { answersCount: 4 },
-  rounds = 5
+  rounds = 1
 }) => {
-  // make Component
-  // props: rounds = 5, grade = 3, changeAppState({score,rightansw})
-  // handle: handleOver, handleStart, handleRoundFinished, newRound
-  // state:  problemSpec, round, score, roundState
-
-  // handleSuccess + handleFail move to Round comp.
-
   const [score, setScore] = useState(0);
-  const [round, setRound] = useState(0);
-  const [roundState, setRoundState] = useState(roundStates.init);
+  const [round, setRound] = useState(1);
   const [problemSpec, setProblemSpec] = useState(createProblem(problemOptions));
 
-  const handleSuccess = scoreUnit => () => {
-    console.log('success');
+  const heading = useRef(null);
+
+  const onSuccess = scoreUnit => {
+    console.log('game - on success');
     setScore(score + scoreUnit);
-    handleRoundEnd();
   };
 
-  const handleFail = () => {
-    console.log('fail');
-    handleRoundEnd();
+  const onRoundOver = restart => {
+    console.log('game - on round over');
+    round + 1 > rounds
+      ? setTimeout(() => handleGameOver({ score }), 1000)
+      : roundRestart(restart);
   };
 
-  const handleRoundEnd = () => {
-    setRoundState(roundStates.over);
-    round + 1 > rounds ? handleGameOver({ score }) : handleOver();
-  };
-
-  const handleOver = () => {
-    //setProblemSpec();
-    setRoundState(roundStates.init);
-  };
-
-  const newRound = () => {
-    setRoundState(roundStates.running);
+  const roundRestart = restart => {
     console.log('preparing new round');
     setRound(round => round + 1);
     setProblemSpec(createProblem(problemOptions));
+    restart();
   };
 
   useEffect(() => {
-    if (roundState === roundStates.init) {
-      newRound();
-    }
-  }, [roundState]);
+    TweenLite.to(heading.current, 1.5, { transform: 'scale(0.5)' });
+  });
 
   return (
     <div className='app game'>
-      <h1 className='main-title'>MATH KIDS</h1>
+      <h1 ref={heading} className='main-title'>
+        MATH KIDS
+      </h1>
       <Round
-        roundState={roundState}
-        render={({ scoreUnit }) => (
-          <Fragment>
+        {...{ onSuccess, onRoundOver }}
+        render={({ scoreUnit, handleSuccess, handleFail }) => (
+          <>
             <Problem
               {...{
-                handleSuccess: handleSuccess(scoreUnit),
+                handleSuccess,
                 handleFail,
                 problemSpec
               }}
             />
             <h2 className='score-unit'>{scoreUnit.toFixed(2)}</h2>
             <Score score={score} />
-          </Fragment>
+          </>
         )}
       />
     </div>
