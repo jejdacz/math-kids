@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 
 export const roundStates = Object.freeze({
   init: 'init', // components hidden
@@ -19,7 +19,6 @@ const Round = ({
   render
 }) => {
   const [scoreUnit, setScoreUnit] = useState(initScoreUnit);
-  const [timerActive, setTimerActive] = useState(false);
   const [roundState, setRoundState] = useState(roundStates.init);
 
   const handleSuccess = () => {
@@ -39,7 +38,7 @@ const Round = ({
     if (roundState === roundStates.init) {
       console.log('roundstate - init');
       setScoreUnit(initScoreUnit);
-      setTimerActive(false);
+      stopCountdown();
       setTimeout(() => setRoundState(roundStates.loading), 1000);
     }
 
@@ -50,12 +49,12 @@ const Round = ({
 
     if (roundState === roundStates.running) {
       console.log('roundstate - running');
-      setTimerActive(true);
+      startCountdown();
     }
 
     if (roundState === roundStates.answerPicked) {
       console.log('roundstate - answer picked');
-      setTimerActive(false);
+      stopCountdown();
     }
 
     if (roundState === roundStates.fail) {
@@ -74,23 +73,35 @@ const Round = ({
     }
   }, [roundState]);
 
+  const reduceScore = useCallback(() => {
+    setScoreUnit(scoreUnit => scoreUnit * scoreReducer);
+  }, [scoreUnit]);
+
+  const [startCountdown, stopCountdown] = useInterval(reduceScore);
+
+  return render({ scoreUnit, handleSuccess, handleFail });
+};
+
+const useInterval = (func, interval = 100) => {
+  const [active, setActive] = useState(false);
+
+  const start = () => setActive(true);
+  const stop = () => setActive(false);
+
   useEffect(() => {
     let timer;
 
-    if (timerActive) {
+    if (active) {
       console.log('timer - running');
-      timer = setInterval(() => {
-        setScoreUnit(scoreUnit => scoreUnit * scoreReducer);
-      }, 100);
+      timer = setInterval(func, interval);
     }
-
     return () => {
       console.log('timer - cleanup');
       if (timer) clearInterval(timer);
     };
-  }, [timerActive]);
+  }, [active]);
 
-  return render({ scoreUnit, handleSuccess, handleFail });
+  return [start, stop];
 };
 
 export default Round;
