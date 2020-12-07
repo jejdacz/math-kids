@@ -1,4 +1,6 @@
 import { useState, useEffect, useCallback } from 'react';
+import Problem from '../Problem/Problem.component';
+import createProblem from '../../createProblem';
 
 export const roundStates = Object.freeze({
   init: 'init', // components hidden
@@ -14,12 +16,13 @@ export const roundStates = Object.freeze({
 const Round = ({
   initScoreUnit = 10,
   scoreReducer = 0.98,
+  problemOptions = { answersCount: 4 },
   onSuccess,
-  onRoundOver,
-  render
+  onRoundOver
 }) => {
   const [scoreUnit, setScoreUnit] = useState(initScoreUnit);
   const [roundState, setRoundState] = useState(roundStates.init);
+  const [problemSpec, setProblemSpec] = useState();
 
   const handleSuccess = () => {
     console.log('handle-success');
@@ -39,6 +42,7 @@ const Round = ({
       console.log('roundstate - init');
       setScoreUnit(initScoreUnit);
       stopCountdown();
+      setProblemSpec(createProblem(problemOptions));
       setTimeout(() => setRoundState(roundStates.loading), 1000);
     }
 
@@ -75,11 +79,40 @@ const Round = ({
 
   const reduceScore = useCallback(() => {
     setScoreUnit(scoreUnit => scoreUnit * scoreReducer);
-  }, [scoreUnit]);
+  }, [scoreReducer]);
 
   const [startCountdown, stopCountdown] = useInterval(reduceScore);
 
-  return render({ scoreUnit, handleSuccess, handleFail });
+  switch (roundState) {
+    case roundStates.running:
+      return (
+        <Running
+          {...{
+            handleSuccess,
+            handleFail,
+            problemSpec,
+            scoreUnit
+          }}
+        />
+      );
+    default:
+      return <p>{roundState}</p>;
+  }
+};
+
+const Running = ({ handleSuccess, handleFail, problemSpec, scoreUnit }) => {
+  return (
+    <>
+      <Problem
+        {...{
+          handleSuccess,
+          handleFail,
+          problemSpec
+        }}
+      />
+      <h2 className='score-unit'>{scoreUnit.toFixed(2)}</h2>
+    </>
+  );
 };
 
 const useInterval = (func, interval = 100) => {

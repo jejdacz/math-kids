@@ -1,19 +1,11 @@
 import React, { useState, useEffect, useRef } from 'react';
-import Problem from '../components/Problem/Problem.component';
 import Round from '../components/Round/Round.component';
 import Score from '../components/Score/Score.component';
 import { TweenLite } from 'gsap';
 
-import createProblem from '../createProblem';
-
-const Game = ({
-  handleGameOver,
-  problemOptions = { answersCount: 4 },
-  rounds = 1
-}) => {
+const Game = ({ handleGameOver, rounds = 1 }) => {
   const [score, setScore] = useState(0);
   const [round, setRound] = useState(1);
-  const [problemSpec, setProblemSpec] = useState(createProblem(problemOptions));
 
   const heading = useRef(null);
 
@@ -32,7 +24,6 @@ const Game = ({
   const roundRestart = restart => {
     console.log('preparing new round');
     setRound(round => round + 1);
-    setProblemSpec(createProblem(problemOptions));
     restart();
   };
 
@@ -45,22 +36,8 @@ const Game = ({
       <h1 ref={heading} className='main-title'>
         MATH KIDS
       </h1>
-      <Round
-        {...{ onSuccess, onRoundOver }}
-        render={({ scoreUnit, handleSuccess, handleFail }) => (
-          <>
-            <Problem
-              {...{
-                handleSuccess,
-                handleFail,
-                problemSpec
-              }}
-            />
-            <h2 className='score-unit'>{scoreUnit.toFixed(2)}</h2>
-            <Score score={score} />
-          </>
-        )}
-      />
+      <Round {...{ onSuccess, onRoundOver }} />
+      <Score score={score} />
     </div>
   );
 };
