@@ -27,8 +27,14 @@ const Game = ({ handleGameOver, rounds = 1 }) => {
     restart();
   };
 
+  // TweenLite test
+
   useEffect(() => {
-    TweenLite.to(heading.current, 1.5, { transform: 'scale(0.5)' });
+    TweenLite.to(heading.current, 5, {
+      transform: 'scale(0.5)',
+      onComplete: message => console.log(message),
+      onCompleteParams: ['hello tween']
+    });
   });
 
   return (
