@@ -1,6 +1,6 @@
 import React from 'react';
 
-const Waiting = ({ handleStart }) => {
+const Waiting = () => {
   return (
     <div className='app waiting'>
       <h1 className='main-title'>MATH KIDS</h1>
