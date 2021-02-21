@@ -1,0 +1,24 @@
+{
+  "files": {
+    "main.css": "/jejdacz/math-kids/static/css/main.a91d4df0.chunk.css",
+    "main.js": "/jejdacz/math-kids/static/js/main.37e8401a.chunk.js",
+    "main.js.map": "/jejdacz/math-kids/static/js/main.37e8401a.chunk.js.map",
+    "runtime-main.js": "/jejdacz/math-kids/static/js/runtime-main.5f707dfb.js",
+    "runtime-main.js.map": "/jejdacz/math-kids/static/js/runtime-main.5f707dfb.js.map",
+    "static/js/2.a790e202.chunk.js": "/jejdacz/math-kids/static/js/2.a790e202.chunk.js",
+    "static/js/2.a790e202.chunk.js.map": "/jejdacz/math-kids/static/js/2.a790e202.chunk.js.map",
+    "static/js/3.45c22ae1.chunk.js": "/jejdacz/math-kids/static/js/3.45c22ae1.chunk.js",
+    "static/js/3.45c22ae1.chunk.js.map": "/jejdacz/math-kids/static/js/3.45c22ae1.chunk.js.map",
+    "index.html": "/jejdacz/math-kids/index.html",
+    "service-worker.js": "/jejdacz/math-kids/service-worker.js",
+    "service-worker.js.map": "/jejdacz/math-kids/service-worker.js.map",
+    "static/css/main.a91d4df0.chunk.css.map": "/jejdacz/math-kids/static/css/main.a91d4df0.chunk.css.map",
+    "static/js/2.a790e202.chunk.js.LICENSE.txt": "/jejdacz/math-kids/static/js/2.a790e202.chunk.js.LICENSE.txt"
+  },
+  "entrypoints": [
+    "static/js/runtime-main.5f707dfb.js",
+    "static/js/2.a790e202.chunk.js",
+    "static/css/main.a91d4df0.chunk.css",
+    "static/js/main.37e8401a.chunk.js"
+  ]
+}
