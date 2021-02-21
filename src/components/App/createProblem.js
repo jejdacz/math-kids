@@ -1,4 +1,26 @@
-const operators = ['+', '-'];
+const createSustraction = limit => {
+  const num1 = Math.floor(Math.random() * limit);
+  const num2 = Math.floor(Math.random() * limit);
+  const problem = `${num1} + ${num2}`;
+  const answer = num1 + num2;
+  return {
+    problem,
+    answer
+  };
+};
+
+const createAddition = limit => {
+  const num1 = Math.floor(Math.random() * limit);
+  const num2 = Math.floor(Math.random() * limit);
+  const problem = `${num1 + num2} - ${num1}`;
+  const answer = num2;
+  return {
+    problem,
+    answer
+  };
+};
+
+const operations = [createAddition, createSustraction];
 
 const createBadAnswer = answer => {
   const num = Math.floor(Math.random() * 10);
@@ -13,14 +35,10 @@ const addUnique = (fn, arr) => {
 // array sort function to shuffle values
 const shuffle = (a, b) => 0.5 - Math.random();
 
-const createProblem = ({ answersCount }) => {
-  const num1 = Math.floor(Math.random() * 10);
-  const num2 = Math.floor(Math.random() * 10);
-  const operatorIndex = Math.floor(Math.random() * operators.length);
+const createProblem = ({ answersCount, limit }) => {
+  const operatorIndex = Math.floor(Math.random() * operations.length);
 
-  const problem = `${num1} ${operators[operatorIndex]} ${num2}`;
-
-  const correctAnswer = parseInt(eval(problem));
+  const { problem, answer: correctAnswer } = operations[operatorIndex](limit);
 
   // create array of given length with random numbers
   let answers = [correctAnswer];

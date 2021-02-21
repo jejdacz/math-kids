@@ -1,7 +1,7 @@
 import React, { useEffect, useRef } from 'react';
 import Score from '../../Score/Score.component';
 import { TweenLite } from 'gsap';
-import { roundStates } from '../store';
+import { gameStates, roundStates } from '../store';
 
 const Game = React.memo(
   ({
@@ -11,18 +11,16 @@ const Game = React.memo(
     gameState,
     problem,
     startRound,
-    finishRound
+    finishRound,
+    initRound
   }) => {
     const heading = useRef(null);
 
-    console.log('game rerender');
     // TweenLite test
 
     useEffect(() => {
       TweenLite.to(heading.current, 5, {
-        transform: 'scale(0.5)',
-        onComplete: message => console.log(message),
-        onCompleteParams: ['hello tween']
+        transform: 'scale(0.85)'
       });
     }, [gameState]);
 
@@ -34,7 +32,7 @@ const Game = React.memo(
         // setScoreUnit(initScoreUnit);
         // stopCountdown();
         // setProblemSpec(createProblem(problemOptions));
-        setTimeout(() => startRound(), 1000);
+        setTimeout(() => startRound(), 500);
       }
 
       if (roundState === roundStates.loading) {
@@ -49,31 +47,30 @@ const Game = React.memo(
 
       if (roundState === roundStates.answerPicked) {
         console.log('roundstate - answer picked');
-        setTimeout(() => finishRound(), 3000);
+        //setTimeout(() => finishRound(), 3000);
         // stopCountdown();
       }
 
       if (roundState === roundStates.fail) {
         console.log('roundstate - fail');
+        setTimeout(() => finishRound(), 1000);
         // setTimeout(() => setRoundState(roundStates.over), 1000);
       }
 
       if (roundState === roundStates.success) {
         console.log('roundstate - success');
+        setTimeout(() => finishRound(), 2000);
         // setTimeout(() => setRoundState(roundStates.over), 1000);
       }
 
-      if (roundState === roundStates.over) {
+      if (roundState === roundStates.over && gameState === gameStates.game) {
         console.log('roundstate - over');
-        // onRoundOver(() => setRoundState(roundStates.init));
+        setTimeout(() => initRound(), 500);
       }
-    }, [roundState]);
+    }, [roundState, gameState]);
 
     return (
       <div className='app game'>
-        <h1 ref={heading} className='main-title'>
-          MATH KIDS
-        </h1>
         {problem}
         <h2 className='score-unit'>{scoreUnit.toFixed(2)}</h2>
         <Score score={score} />

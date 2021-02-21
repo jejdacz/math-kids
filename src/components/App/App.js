@@ -1,4 +1,4 @@
-import React, { useContext, useState, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import Game from './AppStates/Game.appState';
 import Over from './AppStates/Over.appState';
 import Intro from './AppStates/Intro.appSate';
@@ -8,28 +8,16 @@ import {
   store,
   gameStates,
   startGame,
+  restartGame,
   startRound,
+  stopRound,
   finishRound,
-  pickAnswer,
+  initRound,
+  checkAnswer,
   roundStates
 } from './store';
 
 import './App.scss';
-
-/* context */
-
-export const AppContext = React.createContext();
-
-export const useAppContext = map => {
-  const value = useContext(AppContext);
-  return map(value);
-};
-
-export const withAppContext = map => Comp => props => {
-  const context = map(useContext(AppContext));
-  const mappedContext = map(context);
-  return <Comp {...{ ...props, ...mappedContext }} />;
-};
 
 /*** App component ***/
 
@@ -45,11 +33,13 @@ const App = () => {
 
   const { score, scoreUnit, roundState, gameState, problemSpec } = state;
 
-  const buttonsActive = roundState === roundStates.running;
+  const buttonsEnabled = roundState === roundStates.running;
 
-  const problem = <Problem {...{ buttonsActive, problemSpec, pickAnswer }} />;
-
-  console.log('app rerender');
+  const problem = (
+    <Problem
+      {...{ buttonsEnabled, problemSpec, stopRound, checkAnswer, finishRound }}
+    />
+  );
 
   const renderContent = () => {
     switch (state.gameState) {
@@ -65,10 +55,11 @@ const App = () => {
             problem={problem}
             startRound={startRound}
             finishRound={finishRound}
+            initRound={initRound}
           />
         );
       case gameStates.over:
-        return <Over {...{ startGame, score }} />;
+        return <Over {...{ restartGame, score }} />;
       default:
         return <Error {...{ startGame }} />;
     }

@@ -1,33 +1,49 @@
 import React from 'react';
 import styled from 'styled-components';
-//import './CustomButton.styles.scss';
-
-const CustomButton = props => {
-  return <button {...props}></button>;
-};
-
+/*
+const CustomButton = React.forwardRef((props, ref) => (
+  <button ref={ref} {...props}></button>
+));
+const CustomButton = React.forwardRef((props, ref) => (
+  <button ref={ref} {...props}></button>
+));*/
 /* styled components
+
   cons:
     no ide hints
+    no scss functions (darken) ----> could be replace by JS function
 
   pros:
     one file
+    css unique class id
+
+  ********************
+
+  theming:
+    theme imported in index.js and provided by ThemeProvider from styled-components lib
 */
-const StyledCustomButton = styled(CustomButton)`
+
+const StyledCustomButton = styled.button`
   font: inherit;
   font-size: 1.7rem;
   padding: 1.2rem 1.8rem;
   border: 0;
-  background-color: hotpink;
-  color: white;
+  background-color: ${props => props.theme.secondary};
+  color: ${props => props.theme.onSecondary};
   outline: 0;
   border-radius: 0.5rem;
   text-align: center;
+  user-select: none;
 
   &:focus {
     outline: none;
-    border: 4px solid white;
   }
 `;
+
+StyledCustomButton.defaultProps = {
+  theme: {
+    secondary: '#fff'
+  }
+};
 
 export default StyledCustomButton;

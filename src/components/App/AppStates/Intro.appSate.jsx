@@ -1,13 +1,16 @@
 import React from 'react';
-import CustomButton from '../../CustomButton/CustomButton.component';
+import MenuButton from '../../MenuButton/MenuButton.component';
+import Particles from 'react-particles-js';
+import particlesConfig from '../particlesjs-config.json';
 
 const Intro = React.memo(({ startGame }) => {
   return (
     <div className='app intro'>
+      <Particles params={particlesConfig} />
       <h1 className='main-title'>MATH KIDS</h1>
-      <CustomButton onClick={startGame} className='button-start'>
+      <MenuButton onClick={startGame} className='button-start'>
         START
-      </CustomButton>
+      </MenuButton>
     </div>
   );
 });

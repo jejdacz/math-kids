@@ -24,7 +24,9 @@ input[type='number'] {
   align-items: center;
   flex-direction: column;
   min-height: 100vh;
-  background-color: #c4f2ff;
+  //background-color: #c4f2ff;
+  //background: -webkit-canvas(particles) no-repeat 50% 50%;
+
   color: #3982c1;
 
   .main-title {
@@ -65,6 +67,15 @@ input[type='number'] {
     .score-container {
       margin-bottom: 2rem;
     }
+  }
+
+  &.game,
+  &.over {
+    justify-content: center;
+  }
+
+  &.game {
+    background-color: #c4f2ff;
   }
 }
 
