@@ -7,7 +7,7 @@ const Problem = React.memo(
   ({
     stopRound,
     checkAnswer,
-    finishRound,
+
     buttonsEnabled,
     problemSpec: { problem, correctAnswer, answers }
   }) => {
@@ -16,6 +16,7 @@ const Problem = React.memo(
       const buttons = answers.map((x, i) => (
         <GameButton
           key={i}
+          position={i}
           onClickStart={stopRound}
           onClickComplete={
             x === correctAnswer

@@ -6,6 +6,10 @@ import * as serviceWorkerRegistration from './serviceWorkerRegistration';
 import reportWebVitals from './reportWebVitals';
 import { ThemeProvider } from 'styled-components';
 import theme from './theme';
+import { gsap } from 'gsap';
+import { CSSPlugin } from 'gsap/CSSPlugin';
+
+gsap.registerPlugin(CSSPlugin);
 
 ReactDOM.render(
   <React.StrictMode>

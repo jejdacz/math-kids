@@ -1,0 +1,41 @@
+@keyframes fade-in {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes fade-out {
+  from {
+    opacity: 1;
+  }
+  to {
+    opacity: 0;
+  }
+}
+
+.fade-in {
+  animation: fade-in 0.5s ease-out both;
+}
+
+// enter escape
+
+.intro-loading {
+  &.main-title {
+    animation: fade-in 0.5s ease-out both;
+  }
+  &.button-start {
+    animation: fade-in 0.5s ease-out both;
+  }
+}
+
+.intro-game-starting {
+  &.main-title {
+    animation: fade-out 0.5s ease-out both;
+  }
+  &.button-start {
+    animation: fade-out 0.5s ease-out both;
+  }
+}

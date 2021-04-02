@@ -1,6 +1,15 @@
 import createStore from './createStore';
 import createProblem from './createProblem';
 
+// TODO: only one state list
+// Intro
+// RoundInit
+// RoundLoading
+// RoundReady
+// ...
+// Over
+// Error
+
 export const gameStates = Object.freeze({
   intro: 'intro',
   game: 'game',

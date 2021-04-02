@@ -12,6 +12,7 @@ const GameButton = ({
   onClickStart,
   onClickComplete,
   enabled,
+  position,
   effect,
   ...props
 }) => {
@@ -20,8 +21,6 @@ const GameButton = ({
   const gbref = useRef(null);
 
   const clickTimeline = useMemo(() => new TimelineLite({ paused: true }), []);
-
-  console.log('timeline defined');
 
   useEffect(() => {
     console.log('gb timeline adjusted');
@@ -62,9 +61,18 @@ const GameButton = ({
         },
         'fail'
       )
-      .addLabel('over')
+      .addLabel('over', '+=0.1')
       .call(() => console.log('over reached'), [])
-      .set(gbref.current, { x: '0', rotation: '0' }, 'over+=0.2');
+      .set(
+        gbref.current,
+        {
+          x: '0',
+          y: '0',
+          z: '0',
+          rotation: '0'
+        },
+        'over+=0.2'
+      );
     /*
       .addPause('fail', () => {
         console.log('onpause');

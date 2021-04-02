@@ -2,6 +2,7 @@ import React, { useEffect, useRef } from 'react';
 import Score from '../../Score/Score.component';
 import { TweenLite } from 'gsap';
 import { gameStates, roundStates } from '../store';
+import Animate from '../../Animate/Animate.component';
 
 const Game = React.memo(
   ({
@@ -53,7 +54,7 @@ const Game = React.memo(
 
       if (roundState === roundStates.fail) {
         console.log('roundstate - fail');
-        setTimeout(() => finishRound(), 1000);
+        setTimeout(() => finishRound(), 2000);
         // setTimeout(() => setRoundState(roundStates.over), 1000);
       }
 
@@ -73,11 +74,19 @@ const Game = React.memo(
       <div className='app game'>
         {problem}
         <h2 className='score-unit'>{scoreUnit.toFixed(2)}</h2>
-        <Score score={score} />
+        <Animate>
+          <Score score={score} className='sc1' />
+        </Animate>
       </div>
     );
   }
 );
+/*
+<Animate
+          id='score'
+          render={animate => <Score score={score} className={animate} />}
+          component={<Score score={score} />}
+        />*/
 
 Game.displayName = 'Game';
 
