@@ -1,74 +1,46 @@
-import React, { useEffect, useRef } from 'react';
+import React, { useEffect } from 'react';
 import Score from '../../Score/Score.component';
-import { TweenLite } from 'gsap';
-import { gameStates, roundStates } from '../store';
+import { gameStates } from '../store';
 import Animate from '../../Animate/Animate.component';
 
 const Game = React.memo(
   ({
     score,
     scoreUnit,
-    roundState,
     gameState,
     problem,
     startRound,
     finishRound,
     initRound
   }) => {
-    const heading = useRef(null);
-
-    // TweenLite test
+    // state transitions
 
     useEffect(() => {
-      TweenLite.to(heading.current, 5, {
-        transform: 'scale(0.85)'
-      });
-    }, [gameState]);
-
-    // round state transitions
-
-    useEffect(() => {
-      if (roundState === roundStates.init) {
-        console.log('roundstate - init');
+      if (gameState === gameStates.roundInit) {
+        console.log('gamestate - round - init');
         // setScoreUnit(initScoreUnit);
         // stopCountdown();
         // setProblemSpec(createProblem(problemOptions));
         setTimeout(() => startRound(), 500);
       }
 
-      if (roundState === roundStates.loading) {
-        console.log('roundstate - loading');
-        // setTimeout(() => setRoundState(roundStates.running), 1000);
-      }
-
-      if (roundState === roundStates.running) {
-        console.log('roundstate - running');
-        // startCountdown();
-      }
-
-      if (roundState === roundStates.answerPicked) {
-        console.log('roundstate - answer picked');
-        //setTimeout(() => finishRound(), 3000);
-        // stopCountdown();
-      }
-
-      if (roundState === roundStates.fail) {
-        console.log('roundstate - fail');
+      if (gameState === gameStates.roundFail) {
+        console.log('gamestate - round - fail');
         setTimeout(() => finishRound(), 2000);
         // setTimeout(() => setRoundState(roundStates.over), 1000);
       }
 
-      if (roundState === roundStates.success) {
-        console.log('roundstate - success');
+      if (gameState === gameStates.roundSuccess) {
+        console.log('gamestate - round - success');
         setTimeout(() => finishRound(), 2000);
         // setTimeout(() => setRoundState(roundStates.over), 1000);
       }
 
-      if (roundState === roundStates.over && gameState === gameStates.game) {
-        console.log('roundstate - over');
+      if (gameState === gameStates.roundOver) {
+        console.log('gamestate - round - over');
         setTimeout(() => initRound(), 500);
       }
-    }, [roundState, gameState]);
+    }, [gameState]);
 
     return (
       <div className='app game'>
@@ -81,12 +53,6 @@ const Game = React.memo(
     );
   }
 );
-/*
-<Animate
-          id='score'
-          render={animate => <Score score={score} className={animate} />}
-          component={<Score score={score} />}
-        />*/
 
 Game.displayName = 'Game';
 

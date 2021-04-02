@@ -7,7 +7,6 @@ const Problem = React.memo(
   ({
     stopRound,
     checkAnswer,
-
     buttonsEnabled,
     problemSpec: { problem, correctAnswer, answers }
   }) => {

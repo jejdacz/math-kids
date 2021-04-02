@@ -15,8 +15,7 @@ import {
   stopRound,
   finishRound,
   initRound,
-  checkAnswer,
-  roundStates
+  checkAnswer
 } from './store';
 
 import './App.scss';
@@ -36,17 +35,7 @@ const App = () => {
     };
   }, []);
 
-  const { score, scoreUnit, roundState, gameState, problemSpec } = state;
-
-  // child parameter
-  useEffect(() => {
-    if (roundState === roundStates.init) {
-      setAnimateState(scenes.introLoading);
-    }
-    if (roundState === roundStates.stopped) {
-      setAnimateState(scenes.introLoading);
-    }
-  }, [roundState]);
+  const { score, scoreUnit, gameState, problemSpec } = state;
 
   // parent parameter
   useEffect(() => {
@@ -55,7 +44,7 @@ const App = () => {
     }
   }, [gameState]);
 
-  const buttonsEnabled = roundState === roundStates.running;
+  const buttonsEnabled = gameState === gameStates.roundRunning;
 
   const problem = (
     <Problem
@@ -77,12 +66,18 @@ const App = () => {
     switch (state.gameState) {
       case gameStates.intro:
         return <Intro startGame={handleStartGame} />;
-      case gameStates.game:
+      case gameStates.roundInit:
+      case gameStates.roundLoading:
+      case gameStates.roundReady:
+      case gameStates.roundRunning:
+      case gameStates.roundStopped:
+      case gameStates.roundSuccess:
+      case gameStates.roundFail:
+      case gameStates.roundOver:
         return (
           <Game
             score={score}
             scoreUnit={scoreUnit}
-            roundState={roundState}
             gameState={gameState}
             problem={problem}
             startRound={startRound}
