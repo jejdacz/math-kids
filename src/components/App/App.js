@@ -5,7 +5,7 @@ import Intro from './AppStates/Intro.appSate';
 import Error from './AppStates/Error.appSate';
 import Problem from '../Problem/Problem.component';
 import { scenes } from './Animation';
-import { Animate, AnimateContext } from '../Animate/Animate.component';
+import { AnimateContext } from '../Animate/Animate.component';
 import {
   store,
   gameStates,
@@ -37,10 +37,12 @@ const App = () => {
 
   const { score, scoreUnit, gameState, problemSpec } = state;
 
-  // parent parameter
+  // set animate scene due to game state
   useEffect(() => {
     if (gameState === gameStates.intro) {
       setAnimateState(scenes.introLoading);
+    } else if (gameState === gameStates.roundLoading) {
+      //setAnimateState(scenes.roundLoading);
     }
   }, [gameState]);
 

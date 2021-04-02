@@ -18,22 +18,17 @@ const Game = React.memo(
     useEffect(() => {
       if (gameState === gameStates.roundInit) {
         console.log('gamestate - round - init');
-        // setScoreUnit(initScoreUnit);
-        // stopCountdown();
-        // setProblemSpec(createProblem(problemOptions));
         setTimeout(() => startRound(), 500);
       }
 
       if (gameState === gameStates.roundFail) {
         console.log('gamestate - round - fail');
         setTimeout(() => finishRound(), 2000);
-        // setTimeout(() => setRoundState(roundStates.over), 1000);
       }
 
       if (gameState === gameStates.roundSuccess) {
         console.log('gamestate - round - success');
         setTimeout(() => finishRound(), 2000);
-        // setTimeout(() => setRoundState(roundStates.over), 1000);
       }
 
       if (gameState === gameStates.roundOver) {
