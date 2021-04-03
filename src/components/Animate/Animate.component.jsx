@@ -1,18 +1,7 @@
 import React, { useContext } from 'react';
 import classNames from 'classnames';
-import './Animate.styles.scss';
 
 export const AnimateContext = React.createContext();
-/*
-export const Animate = ({ render, id }) => {
-  const context = useContext(AnimateContext);
-  return render(context[id]);
-};*/
-/*
-export const Animate = ({ children, id }) => {
-  const context = useContext(AnimateContext);
-  return React.cloneElement(children, { className: context[id] });
-};*/
 
 const addClassToChildren = (children, className) => {
   const elements = React.Children.map(children, e => {
@@ -42,7 +31,7 @@ export const Animate = ({ children }) => {
 
   //return addStyleToChildren(children, context[id]);
 
-  return addClassToChildren(children, classNames(context.name));
+  return addClassToChildren(children, classNames(context.className));
 };
 
 /*

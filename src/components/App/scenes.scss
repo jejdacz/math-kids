@@ -1,0 +1,128 @@
+@use 'animation' as b;
+
+// ANIMATION SCENES
+
+@keyframes click-success {
+  20% {
+    transform: scale(0.75);
+    background-color: hotpink;
+    animation-timing-function: linear; // is used for 0% - 25%
+  }
+  30% {
+    transform: scale(1.5);
+    background-color: lighten($color: hotpink, $amount: 15);
+    animation-timing-function: ease-out;
+  }
+  100% {
+    transform: scale(1) rotateZ(360deg);
+    background-color: hotpink;
+  }
+}
+
+@keyframes click-fail {
+  0% {
+    transform: translateX(4px);
+  }
+  15% {
+    transform: translateX(-4px);
+  }
+  30% {
+    transform: translateX(3px);
+  }
+  45% {
+    transform: translateX(-3px);
+  }
+  60% {
+    transform: translateX(2px);
+  }
+  75% {
+    transform: translateX(-2px);
+  }
+  100% {
+    transform: translateX(0px);
+    background-color: rgb(124, 123, 123);
+  }
+}
+
+.intro-loading {
+  &.main-title {
+    @extend %enter-top;
+  }
+  &.button-start {
+    @extend %enter-bottom;
+  }
+}
+
+.intro-game-starting {
+  &.main-title {
+    @extend %fade-out;
+  }
+  &.button-start {
+    @extend %fade-out;
+  }
+}
+
+.round-loading {
+  &.game-button {
+    @extend %enter-left;
+  }
+  &.problem {
+    @extend %enter-top;
+  }
+  &.score-unit {
+    animation: fade-in 0.1s ease-out 0.4s both;
+  }
+  &.score-container {
+    @extend %enter-bottom;
+  }
+}
+
+// success animation + clean up
+.round-success {
+  &.game-button {
+    &.selected {
+      animation: click-success 0.5s forwards;
+    }
+  }
+}
+
+.round-fail {
+  &.game-button {
+    &.selected {
+      animation: click-fail 0.5s ease-out forwards;
+    }
+  }
+}
+
+.round-cleanup {
+  &.game-button {
+    @extend %exit-left;
+  }
+  &.problem {
+    @extend %exit-right;
+  }
+  &.score-unit {
+    @extend %fade-out;
+  }
+  &.score-container {
+    @extend %exit-bottom;
+  }
+}
+
+.over {
+  &.score-container {
+    @extend %enter-top;
+  }
+  &.button-restart {
+    @extend %enter-bottom;
+  }
+}
+
+.over-game-restarting {
+  &.score-container {
+    @extend %fade-out;
+  }
+  &.button-restart {
+    @extend %fade-out;
+  }
+}

@@ -1,0 +1,149 @@
+// entering animation should be backwards
+// escaping animation should be forwards
+
+@mixin animate($name) {
+  animation: $name 0.5s ease-out both;
+}
+
+@keyframes fade-in {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+%fade-in {
+  animation: fade-in 0.5s ease-out backwards;
+}
+
+@keyframes fade-out {
+  from {
+    opacity: 1;
+  }
+  to {
+    opacity: 0;
+  }
+}
+
+%fade-out {
+  animation: fade-out 0.5s ease-out forwards;
+}
+
+@keyframes enter-top {
+  from {
+    transform: translateY(-100vh);
+  }
+  to {
+    transform: translateY(0);
+  }
+}
+
+%enter-top {
+  animation: enter-top 0.5s ease-out backwards;
+}
+
+@keyframes enter-bottom {
+  from {
+    transform: translateY(100vh);
+  }
+  to {
+    transform: translateY(0);
+  }
+}
+
+%enter-bottom {
+  animation: enter-bottom 0.5s ease-out backwards;
+}
+
+@keyframes enter-left {
+  from {
+    transform: translateX(-100vh);
+  }
+  to {
+    transform: translateX(0);
+  }
+}
+
+%enter-left {
+  animation: enter-left 0.5s ease-out backwards;
+}
+
+keyframes enter-right {
+  from {
+    transform: translateX(100vh);
+  }
+  to {
+    transform: translateX(0);
+  }
+}
+
+%enter-right {
+  animation: enter-right 0.5s ease-out backwards;
+}
+
+@keyframes exit-top {
+  from {
+    transform: translateY(0);
+  }
+  to {
+    transform: translateY(-100vh);
+  }
+}
+
+%exit-top {
+  animation: exit-top 0.5s ease-out forwards;
+}
+
+@keyframes exit-bottom {
+  from {
+    transform: translateY(0);
+  }
+  to {
+    transform: translateY(100vh);
+  }
+}
+
+%exit-bottom {
+  animation: exit-bottom 0.5s ease-out forwards;
+}
+
+@keyframes exit-left {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(-100vh);
+  }
+}
+
+%exit-left {
+  animation: exit-left 0.5s ease-out forwards;
+}
+
+@keyframes exit-right {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(100vh);
+  }
+}
+
+%exit-right {
+  animation: exit-right 0.5s ease-out forwards;
+}
+
+@keyframes rotate-cw {
+  from {
+    transform: rotateZ(0);
+  }
+  to {
+    transform: rotateZ(360deg);
+  }
+}
+
+%rotate-cw {
+  animation: rotate-cw 0.5s ease-out forwards;
+}

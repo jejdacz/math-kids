@@ -1,31 +1,33 @@
 import React, { Fragment } from 'react';
-import GameButton from '../GameButton/GameButton.component';
+import CustomButton from '../CustomButton/CustomButton.component';
+import Animate from '../Animate/Animate.component';
+import classNames from 'classnames';
 
 import './Problem.styles.scss';
 
 const Problem = React.memo(
   ({
-    stopRound,
     checkAnswer,
-    buttonsEnabled,
+    selectedButton,
     problemSpec: { problem, correctAnswer, answers }
   }) => {
     const createButtons = (correctAnswer, answers) => {
       // create buttons
       const buttons = answers.map((x, i) => (
-        <GameButton
+        <CustomButton
           key={i}
-          position={i}
-          onClickStart={stopRound}
-          onClickComplete={
+          onClick={checkAnswer(
             x === correctAnswer
-              ? () => checkAnswer({ answer: x, correct: true })
-              : () => checkAnswer({ answer: x, correct: false })
-          }
-          enabled={buttonsEnabled}
-          effect={x === correctAnswer ? 'success' : 'fail'}>
+              ? { answer: x, correct: true, index: i }
+              : { answer: x, correct: false, index: i }
+          )}
+          className={classNames(
+            'game-button',
+            x === correctAnswer ? 'success' : 'fail',
+            selectedButton === i && 'selected'
+          )}>
           {x}
-        </GameButton>
+        </CustomButton>
       ));
 
       return buttons;
@@ -33,9 +35,11 @@ const Problem = React.memo(
 
     return (
       <Fragment>
-        <div className='problem'>{problem} = </div>
+        <Animate>
+          <div className='problem'>{problem} = </div>
+        </Animate>
         <div className='answer-container'>
-          {createButtons(correctAnswer, answers)}
+          <Animate>{createButtons(correctAnswer, answers)}</Animate>
         </div>
       </Fragment>
     );

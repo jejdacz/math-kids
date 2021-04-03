@@ -1,12 +1,17 @@
-import React, { useRef } from 'react';
+import React, { useRef, useEffect, useMemo } from 'react';
 import CustomButton from '../CustomButton/CustomButton.component';
 import { TimelineLite } from 'gsap';
 
 const MenuButton = ({ onClick, ...props }) => {
   const button = useRef(null);
-  const myTimeline = new TimelineLite();
+  const myTimeline = useMemo(() => new TimelineLite({ paused: true }), []);
 
   const handleClick = e => {
+    myTimeline.eventCallback('onComplete', () => onClick(e));
+    myTimeline.restart();
+  };
+
+  useEffect(() => {
     myTimeline
       .to(button.current, {
         duration: 0.1,
@@ -20,10 +25,12 @@ const MenuButton = ({ onClick, ...props }) => {
       })
       .to(button.current, {
         duration: 0.2,
-        transform: 'scale(1.0)',
-        onComplete: () => onClick(e)
+        transform: 'scale(1.0)'
       });
-  };
+    return () => {
+      myTimeline.kill();
+    };
+  }, []);
 
   return (
     <CustomButton ref={button} onClick={handleClick} {...props}></CustomButton>

@@ -24,9 +24,7 @@ input[type='number'] {
   align-items: center;
   flex-direction: column;
   min-height: 100vh;
-  //background-color: #c4f2ff;
-  //background: -webkit-canvas(particles) no-repeat 50% 50%;
-
+  overflow: hidden;
   color: #3982c1;
 
   .main-title {
@@ -50,15 +48,10 @@ input[type='number'] {
     margin-bottom: 4rem;
   }
 
-  .button-start {
-    //animation: fade-in 1.5s ease-out backwards 1.5s;
-  }
-
   &.intro {
     justify-content: center;
 
     .main-title {
-      //animation: enter-top 1.5s ease-out both;
       margin-top: 0;
     }
   }
@@ -76,23 +69,5 @@ input[type='number'] {
 
   &.game {
     background-color: #c4f2ff;
-  }
-}
-
-@keyframes enter-top {
-  from {
-    transform: translateY(-100vh);
-  }
-  to {
-    transform: translateY(-0);
-  }
-}
-
-@keyframes fade-in {
-  from {
-    opacity: 0;
-  }
-  to {
-    opacity: 1;
   }
 }

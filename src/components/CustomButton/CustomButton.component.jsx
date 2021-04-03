@@ -4,9 +4,8 @@ import styled from 'styled-components';
 const CustomButton = React.forwardRef((props, ref) => (
   <button ref={ref} {...props}></button>
 ));
-const CustomButton = React.forwardRef((props, ref) => (
-  <button ref={ref} {...props}></button>
-));*/
+*/
+
 /* styled components
 
   cons:

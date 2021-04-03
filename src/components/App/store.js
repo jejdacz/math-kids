@@ -1,25 +1,22 @@
 import createStore from './createStore';
 import createProblem from './createProblem';
 
-export const gameStates = Object.freeze({
+export const appStates = Object.freeze({
   intro: 'intro',
   over: 'over',
   error: 'error',
   roundInit: 'round-init', // components hidden
-  roundLoading: 'round-loading', // showing components
-  roundReady: 'round-ready', // components ready
   roundRunning: 'round-running', // timer started
-  roundStopped: 'round-stopped', // timer stopped
   roundSuccess: 'round-success', // animation of result
   roundFail: 'round-fail', // animation of result
   roundOver: 'round-over' // round is over
 });
 
 const initialGlobalState = {
-  gameState: gameStates.intro,
+  appState: appStates.intro,
   initScoreUnit: 10,
   scoreUnitReducer: 0.98,
-  rounds: 3,
+  rounds: 5,
   score: 0,
   scoreUnit: 10,
   round: 1,
@@ -35,41 +32,38 @@ const getInitialGlobalState = init => ({
 const reducer = (state, action) => {
   switch (action.type) {
     case 'startGame':
-      return { ...state, gameState: gameStates.roundInit };
+      return { ...state, appState: appStates.roundInit };
     case 'restartGame':
       return {
         ...getInitialGlobalState(initialGlobalState),
-        gameState: gameStates.roundInit
+        appState: appStates.roundInit
       };
-    case 'stopRound':
-      return { ...state, gameState: gameStates.roundStopped };
     case 'checkAnswer':
-      console.log(action.payload);
       const { correct } = action.payload;
       return {
         ...state,
         ...(correct && { score: state.score + state.scoreUnit }),
         ...(correct
-          ? { gameState: gameStates.roundSuccess }
-          : { gameState: gameStates.roundFail })
+          ? { appState: appStates.roundSuccess }
+          : { appState: appStates.roundFail })
       };
     case 'initRound':
       return {
         ...state,
         round: state.round + 1,
-        gameState: gameStates.roundInit,
+        appState: appStates.roundInit,
         scoreUnit: state.initScoreUnit,
         problemSpec: createProblem(state.problemOptions)
       };
 
     case 'startRound':
-      return { ...state, gameState: gameStates.roundRunning };
+      return { ...state, appState: appStates.roundRunning };
     case 'finishRound':
       return {
         ...state,
-        gameState: gameStates.roundOver,
+        appState: appStates.roundOver,
         ...(state.round === state.rounds && {
-          gameState: gameStates.over
+          appState: appStates.over
         })
       };
     case 'reduceScoreUnit':
@@ -100,12 +94,11 @@ export const initRound = () => dispatch({ type: 'initRound' });
 export const startRound = () => {
   dispatch({ type: 'startRound' });
   const timer = setInterval(() => {
-    getState().gameState !== gameStates.roundRunning
+    getState().appState !== appStates.roundRunning
       ? clearInterval(timer)
       : reduceScoreUnit();
   }, 100);
 };
-export const stopRound = () => dispatch({ type: 'stopRound' });
 export const finishRound = () => dispatch({ type: 'finishRound' });
 export const reduceScoreUnit = () => {
   dispatch({ type: 'reduceScoreUnit' });
